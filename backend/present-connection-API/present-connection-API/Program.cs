@@ -4,6 +4,9 @@ using present_connection_API.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMvcCore().AddApiExplorer();
+builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -14,6 +17,10 @@ builder.Services.AddDbContext<CarDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 var app = builder.Build();
+
+app.UseCors(options => options.WithOrigins("http://localhost:3000")
+.AllowAnyMethod()
+.AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

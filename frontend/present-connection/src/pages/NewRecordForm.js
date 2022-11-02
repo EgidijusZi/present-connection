@@ -1,8 +1,25 @@
-import React from 'react'
+import { useState, React } from 'react'
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { createAPIEndpoint } from '../actions/api';
 
 export default function NewRecordForm() {
+
+    const [inputs, setInputs] = useState({})
+
+    const handleChange = e => {
+        const value = e.target.value;
+        setInputs({
+            ...inputs,
+            [e.target.name]: value
+        })
+    }
+
+    const handleRequest = e => {
+        e.preventDefault();
+        createAPIEndpoint('create').post(inputs);
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container direction="row"
@@ -15,24 +32,32 @@ export default function NewRecordForm() {
                         //marginTop - workaround to match column rows...
                         style={{ gap: 15, marginTop: '-51.5px' }}>
                         <TextField
+                            name="carBrand"
                             id="car-brand"
                             label="Car brand"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carModel"
                             id="model"
                             label="Model"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carYear"
                             id="year"
                             label="Year"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carFuelType"
                             id="fuel-type"
                             label="Fuel type"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                     </Grid>
                 </Grid>
@@ -40,26 +65,35 @@ export default function NewRecordForm() {
                     <Grid container direction="column"
                         style={{ gap: 15 }}>
                         <TextField
+                            name="carBodyStyle"
                             id="car-body-style"
                             label="Car body style"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carTypeOfGearbox"
                             id="type-of-gearbox"
                             label="Type of gearbox"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carColour"
                             id="colour"
                             label="Colour"
                             variant="outlined"
+                            onChange={handleChange}
                         />
                         <TextField
+                            name="carNumberOfDoors"
                             id="number-of-doors"
                             label="Number of doors"
                             variant="outlined"
+                            onChange={handleChange}
                         />
-                        <Button variant="contained">
+                        <Button variant="contained"
+                            onClick={handleRequest}>
                             Submit
                         </Button>
                     </Grid>

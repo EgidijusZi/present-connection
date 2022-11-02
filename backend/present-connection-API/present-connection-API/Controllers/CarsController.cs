@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,13 +21,15 @@ namespace present_connection_API.Controllers
         }
 
         [HttpGet("~/api/cars")]
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult<List<Car>>> Index()
         {
-              return View(await _context.Cars.ToListAsync());
+            return await _context.Cars.ToListAsync();
         }
 
+
+
         [HttpGet("~/api/cars/{id}")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<ActionResult<Car>> Details(int? id)
         {
             if (id == null || _context.Cars == null)
             {
@@ -40,11 +43,11 @@ namespace present_connection_API.Controllers
                 return NotFound();
             }
 
-            return View(car);
+            return Ok(car);
         }
 
         [HttpPost("~/api/create")]
-        public async Task<IActionResult> Create([Bind("CarId,CarBrand,CarModel,CarYear,CarFuelType,CarBodyStyle,CarTypeOfGearbox,CarColour,CarNumberOfDoors")] Car car)
+        public async Task<ActionResult<Car>> Create([Bind("CarId,CarBrand,CarModel,CarYear,CarFuelType,CarBodyStyle,CarTypeOfGearbox,CarColour,CarNumberOfDoors")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +55,7 @@ namespace present_connection_API.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(car);
+            return Ok(car);
         }
 
         private bool CarExists(int id)
