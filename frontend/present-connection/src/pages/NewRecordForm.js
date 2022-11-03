@@ -2,8 +2,11 @@ import { useState, React } from 'react'
 import { TextField, Button, Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { createAPIEndpoint } from '../actions/api';
+import { useNavigate } from "react-router-dom";
 
 export default function NewRecordForm() {
+
+    let navigate = useNavigate();
 
     const [inputs, setInputs] = useState({})
 
@@ -18,6 +21,7 @@ export default function NewRecordForm() {
     const handleRequest = e => {
         e.preventDefault();
         createAPIEndpoint('create').post(inputs);
+        navigate('/');
     }
 
     return (

@@ -28,7 +28,7 @@ namespace present_connection_API.Controllers
 
 
 
-        [HttpGet("~/api/cars/{id}")]
+        [HttpGet("~/api/cars/details/{id}")]
         public async Task<ActionResult<Car>> Details(int? id)
         {
             if (id == null || _context.Cars == null)
