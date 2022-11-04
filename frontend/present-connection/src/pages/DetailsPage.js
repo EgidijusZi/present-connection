@@ -1,31 +1,39 @@
 import { React, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { createAPIEndpoint } from '../actions/api';
-import { TextField, Box } from '@mui/material';
+import { TextField, Box, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from "react-router-dom";
 
 export default function DetailsPage() {
 
     const params = useParams();
+    let navigate = useNavigate();
 
-    const [cars, setCars] = useState({});
+    const [car, setCar] = useState({});
+
+    let carInfo = [];
+
+    const onClickHandle = () => {
+        navigate('/');
+    }
 
     useEffect(() => {
 
         const fetchData = async () => {
             const response = await createAPIEndpoint('cars/details').fetchById(params.id);
-            setCars(response.data);
+            setCar(response.data);
         }
 
         fetchData()
 
     }, [params.id])
 
-    if (!cars.length) {
+    if (!Object.keys(car).length) {
         return;
+    } else {
+        carInfo.push(car);
     }
-
-    console.log(cars);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -38,41 +46,41 @@ export default function DetailsPage() {
                     <Grid container direction="column"
                         //marginTop - workaround to match column rows...
                         style={{ gap: 15, marginTop: '-51.5px' }}>
-                        {cars.map((row) => {
+                        {carInfo.map((row) => {
                             return (
                                 <>
                                     <TextField
-                                    name="carBrand"
-                                    id="car-brand"
-                                    label="Car brand"
-                                    variant="outlined"
-                                    value={row.carBrand}
-                                    disabled={true}
-                                />
-                                <TextField
-                                    name="carModel"
-                                    id="model"
-                                    label="Model"
-                                    variant="outlined"
-                                    value={row.carModel}
-                                    disabled={true}
-                                />
-                                <TextField
-                                    name="carYear"
-                                    id="year"
-                                    label="Year"
-                                    variant="outlined"
-                                    value={row.carYear}
-                                    disabled={true}
-                                />
-                                <TextField
-                                    name="carFuelType"
-                                    id="fuel-type"
-                                    label="Fuel type"
-                                    variant="outlined"
-                                    value={row.carFuelType}
-                                    disabled={true}
-                                />
+                                        name="carBrand"
+                                        id="car-brand"
+                                        label="Car brand"
+                                        variant="outlined"
+                                        value={row.carBrand}
+                                        disabled={true}
+                                    />
+                                    <TextField
+                                        name="carModel"
+                                        id="model"
+                                        label="Model"
+                                        variant="outlined"
+                                        value={row.carModel}
+                                        disabled={true}
+                                    />
+                                    <TextField
+                                        name="carYear"
+                                        id="year"
+                                        label="Year"
+                                        variant="outlined"
+                                        value={row.carYear}
+                                        disabled={true}
+                                    />
+                                    <TextField
+                                        name="carFuelType"
+                                        id="fuel-type"
+                                        label="Fuel type"
+                                        variant="outlined"
+                                        value={row.carFuelType}
+                                        disabled={true}
+                                    />
                                 </>
                             )
                         })}
@@ -81,11 +89,10 @@ export default function DetailsPage() {
                 <Grid item>
                     <Grid container direction="column"
                         style={{ gap: 15 }}>
-                        {
-                            cars.map((row) => {
-                                return (
-                                    <>
-                                        <TextField
+                        {carInfo.map((row) => {
+                            return (
+                                <>
+                                    <TextField
                                         name="carBodyStyle"
                                         id="car-body-style"
                                         label="Car body style"
@@ -117,13 +124,18 @@ export default function DetailsPage() {
                                         value={row.carNumberOfDoors}
                                         disabled={true}
                                     />
-                                    </>
-                                )
-                            })
+                                </>
+                            )
+                        })
                         }
+                        <Button variant="contained"
+                            onClick={onClickHandle}>
+                            Return
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
         </Box>
     )
 }
+        
